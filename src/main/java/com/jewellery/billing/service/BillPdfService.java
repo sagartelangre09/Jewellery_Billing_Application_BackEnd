@@ -1,5 +1,6 @@
 package com.jewellery.billing.service;
 
+import com.ibm.icu.text.Transliterator;
 import com.jewellery.billing.model.Bill;
 import com.jewellery.billing.model.BillItem;
 
@@ -45,10 +46,11 @@ public class BillPdfService {
             bannerCell.setBackgroundColor(headerBg);
             bannerCell.setPadding(8);
 
-            Paragraph taglines = new Paragraph("|| श्री ||                                            विश्वास हिच परंपरा...", topTaglineFont);
+            Paragraph taglines = new Paragraph("|| Shri ||                                            Trust is our tradition...", topTaglineFont);
+            taglines.setAlignment(Element.ALIGN_CENTER);
             bannerCell.addElement(taglines);
-
-            Paragraph shopTitle = new Paragraph(bill.getShop().getShopName(), shopNameFont);
+        
+            Paragraph shopTitle = new Paragraph(bill.getShop().getEnglishShopName(), shopNameFont);
             shopTitle.setAlignment(Element.ALIGN_CENTER);
             bannerCell.addElement(shopTitle);
 
@@ -158,12 +160,12 @@ public class BillPdfService {
             leftSummary.setWidths(new float[]{30, 70});
 
             addSummaryCell(leftSummary, "By Cash", labelBold, Element.ALIGN_LEFT);
-            addSummaryCell(leftSummary, money(bill.getCashPaid()), normalFont, Element.ALIGN_LEFT);
+            addSummaryCell(leftSummary, money(bill.getGrandTotal()), normalFont, Element.ALIGN_LEFT);
 
-            PdfPCell wordsCell = new PdfPCell(new Phrase("Rs.: " + safe(bill.getAmountInWords()), normalFont));
-            wordsCell.setColspan(2);
-            wordsCell.setPadding(4);
-            leftSummary.addCell(wordsCell);
+//            PdfPCell wordsCell = new PdfPCell(new Phrase("Rs.: " + safe(bill.getAmountInWords()), normalFont));
+//            wordsCell.setColspan(2);
+//            wordsCell.setPadding(4);
+//            leftSummary.addCell(wordsCell);
 
             PdfPCell leftCell = new PdfPCell(leftSummary);
             leftCell.setPadding(0);
@@ -179,8 +181,8 @@ public class BillPdfService {
             addSummaryCell(rightSummary, "Discount", labelBold, Element.ALIGN_LEFT);
             addSummaryCell(rightSummary, money(bill.getDiscount()), normalFont, Element.ALIGN_RIGHT);
 
-            addSummaryCell(rightSummary, "Less URD", labelBold, Element.ALIGN_LEFT);
-            addSummaryCell(rightSummary, money(bill.getUrdDeduction()), normalFont, Element.ALIGN_RIGHT);
+            addSummaryCell(rightSummary, "Tax/GST", labelBold, Element.ALIGN_LEFT);
+            addSummaryCell(rightSummary, money(bill.getTax()), normalFont, Element.ALIGN_RIGHT);
 
             addSummaryCell(rightSummary, "Net Payable", labelBold, Element.ALIGN_LEFT);
             addSummaryCell(rightSummary, money(bill.getGrandTotal()), labelBold, Element.ALIGN_RIGHT);
@@ -294,4 +296,6 @@ public class BillPdfService {
     private String money(BigDecimal value) {
         return value == null ? "0.00" : String.format("%.2f", value.doubleValue());
     }
+   
+    
 }

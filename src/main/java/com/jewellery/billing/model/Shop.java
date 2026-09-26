@@ -17,6 +17,7 @@ public class Shop {
 	private String address;
 	private String phone;
 	private String gstNumber;
+	private String EnglishShopName;
 
 	public Long getId() {
 		return id;
@@ -68,5 +69,13 @@ public class Shop {
 
 	public void setGstNumber(String v) {
 		gstNumber = v;
+	}
+
+	public String getEnglishShopName() {
+		return EnglishShopName;
+	}
+
+	public void setEnglishShopName(String englishShopName) {
+		EnglishShopName = englishShopName;
 	}
 }
