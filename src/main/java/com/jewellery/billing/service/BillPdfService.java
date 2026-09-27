@@ -125,8 +125,8 @@ public class BillPdfService {
                 String desc = item.getItemName() + (item.getHsn() != null && !item.getHsn().isEmpty() ? "\n" + item.getHsn() : "");
                 addItemCell(itemTable, desc, normalFont, Element.ALIGN_LEFT);
                 addItemCell(itemTable, safe(item.getMetal()), normalFont, Element.ALIGN_CENTER);
-                addItemCell(itemTable, safe(item.getPurity()), normalFont, Element.ALIGN_CENTER);
                 addItemCell(itemTable, format(item.getGrossWeight()), normalFont, Element.ALIGN_RIGHT);
+                addItemCell(itemTable, safe(item.getPurity()), normalFont, Element.ALIGN_CENTER);
                 addItemCell(itemTable, money(item.getRatePerGram()), normalFont, Element.ALIGN_RIGHT);
                 addItemCell(itemTable, money(item.getMakingCharges()), normalFont, Element.ALIGN_RIGHT);
                 addItemCell(itemTable, money(item.getAmount()), labelBold, Element.ALIGN_RIGHT);
@@ -160,7 +160,7 @@ public class BillPdfService {
             leftSummary.setWidths(new float[]{30, 70});
 
             addSummaryCell(leftSummary, "By Cash", labelBold, Element.ALIGN_LEFT);
-            addSummaryCell(leftSummary, money(bill.getGrandTotal()), normalFont, Element.ALIGN_LEFT);
+            addSummaryCell(leftSummary, money(bill.getNetPayable()), normalFont, Element.ALIGN_LEFT);
 
 //            PdfPCell wordsCell = new PdfPCell(new Phrase("Rs.: " + safe(bill.getAmountInWords()), normalFont));
 //            wordsCell.setColspan(2);
@@ -185,7 +185,7 @@ public class BillPdfService {
             addSummaryCell(rightSummary, money(bill.getTax()), normalFont, Element.ALIGN_RIGHT);
 
             addSummaryCell(rightSummary, "Net Payable", labelBold, Element.ALIGN_LEFT);
-            addSummaryCell(rightSummary, money(bill.getGrandTotal()), labelBold, Element.ALIGN_RIGHT);
+            addSummaryCell(rightSummary, money(bill.getNetPayable()), labelBold, Element.ALIGN_RIGHT);
 
             PdfPCell rightCell = new PdfPCell(rightSummary);
             rightCell.setPadding(0);
@@ -222,7 +222,7 @@ public class BillPdfService {
                 "Salesman : " + safe(bill.getSalesmanName()) + "            Billed By : " + safe(bill.getBilledBy()),
                 labelBold
             ));
-            declCell.addElement(new Paragraph("IRN No. : " + safe(bill.getIrnNumber()), normalFont));
+           // declCell.addElement(new Paragraph("IRN No. : " + safe(bill.getIrnNumber()), normalFont));
             declCell.addElement(new Paragraph(
                 "\nWe Declare that this invoice shows the actual price of the goods described and all particulars are true and correct.",
                 normalFont
@@ -232,11 +232,11 @@ public class BillPdfService {
             signCell.setHorizontalAlignment(Element.ALIGN_CENTER);
             signCell.setPadding(4);
 
-            Paragraph thanks = new Paragraph("\n\nधन्यवाद", labelBold);
+            Paragraph thanks = new Paragraph("\n\nThanks", labelBold);
             thanks.setAlignment(Element.ALIGN_CENTER);
             signCell.addElement(thanks);
 
-            Paragraph signText = new Paragraph(bill.getShop().getShopName() + " करिता", labelBold);
+            Paragraph signText = new Paragraph(bill.getShop().getShopName() + "Visit Again", labelBold);
             signText.setAlignment(Element.ALIGN_CENTER);
             signCell.addElement(signText);
 
