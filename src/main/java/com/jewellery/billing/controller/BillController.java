@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jewellery.billing.dto.BillRequest;
@@ -51,4 +52,11 @@ public class BillController {
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + bill.getBillNumber() + ".pdf\"")
 				.body(pdf);
 	}
+	
+	@GetMapping("/search")
+    public ResponseEntity<List<Bill>> searchBills(@RequestParam("query") String query) {
+        List<Bill> bills = service.searchBills(query);
+        return ResponseEntity.ok(bills);
+    }
+	
 }

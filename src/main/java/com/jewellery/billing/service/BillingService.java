@@ -107,4 +107,12 @@ public class BillingService {
 		}
 		return bill;
 	}
+	
+	public List<Bill> searchBills(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            return List.of();
+        }
+        return bills.searchByCustomerNameOrPhone(query.trim());
+    }
+	
 }
